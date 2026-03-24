@@ -12,6 +12,14 @@
       "author": {
         "name": "droshima"
       }
+    },
+    {
+      "name": "remember-that",
+      "description": "Reflect on sessions and persist learnings to the right documentation.",
+      "source": "./remember-that",
+      "author": {
+        "name": "droshima"
+      }
     }
   ]
 }

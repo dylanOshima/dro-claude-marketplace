@@ -7,6 +7,7 @@ A curated marketplace of Claude Code skills and plugins.
 | Plugin | Description |
 |--------|-------------|
 | [pool-party](./pool-party) | Feature idea → clarification → planning → DAG task breakdown → parallel agent swarm |
+| [remember-that](./remember-that) | Reflect on sessions and persist learnings to the right documentation |
 
 ## Installation
 
@@ -36,7 +37,7 @@ claude plugin install skills-marketplace@pool-party
 
 ## Adding a Plugin
 
-Each plugin lives in its own subdirectory (as a git submodule) with a standard Claude Code plugin structure:
+Each plugin lives in its own subdirectory with a standard Claude Code plugin structure:
 
 ```
 plugin-name/
@@ -48,8 +49,10 @@ plugin-name/
 └── README.md
 ```
 
+Plugins can be added as local directories (default) or as git submodules for externally-hosted repos.
+
 To add a new plugin:
 
-1. Add the repo as a submodule: `git submodule add <repo-url> <plugin-name>`
+1. Create a subdirectory (or `git submodule add` for external repos)
 2. Add an entry to `.claude-plugin/marketplace.json`
 3. Update this README
