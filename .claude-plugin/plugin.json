@@ -1,0 +1,9 @@
+{
+  "name": "skills-marketplace",
+  "version": "0.1.0",
+  "description": "A curated marketplace of Claude Code skills and plugins.",
+  "author": {
+    "name": "droshima"
+  },
+  "keywords": ["marketplace", "skills", "plugins"]
+}

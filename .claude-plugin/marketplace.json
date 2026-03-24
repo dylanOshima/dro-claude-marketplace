@@ -1,0 +1,17 @@
+{
+  "name": "skills-marketplace",
+  "description": "A curated marketplace of Claude Code skills and plugins.",
+  "owner": {
+    "name": "droshima"
+  },
+  "plugins": [
+    {
+      "name": "pool-party",
+      "description": "Takes a feature idea through clarification, planning, DAG task breakdown, and parallel execution via agent swarm.",
+      "source": "./pool-party",
+      "author": {
+        "name": "droshima"
+      }
+    }
+  ]
+}

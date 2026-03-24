@@ -1,0 +1,3 @@
+[submodule "pool-party"]
+	path = pool-party
+	url = git@github.com:dylanOshima/pool-party.git
