@@ -7,23 +7,12 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Review the conversation transcript for repeated corrections — cases where the user corrected Claude on the same thing more than once this session (e.g., 'I already told you...', 'no, like I said before...', correcting the same mistake twice). Also look for explicit but unhandled 'remember this' requests.\n\nIf you find repeated corrections or unhandled remember requests, respond with:\n{\"decision\": \"block\", \"reason\": \"Detected repeated correction or unhandled remember request. Offering to persist the learning.\", \"systemMessage\": \"Before finishing, you noticed a repeated correction or an unhandled 'remember this' request in this session. Ask the user if they'd like you to persist this learning using the remember-that skill so it carries across sessions. Be specific about what you detected.\"}\n\nIf no repeated corrections or unhandled requests are found, respond with:\n{\"decision\": \"approve\"}",
+            "prompt": "Review the conversation for repeated corrections (user corrected Claude on the same thing more than once) or explicit but unhandled 'remember this' requests. If you find any, set decision to block with a systemMessage asking the user if they'd like to persist the learning using the remember-that skill. Be specific about what you detected. If nothing found, approve.",
             "timeout": 30
           }
         ]
       }
     ],
-    "SessionEnd": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "Quickly scan the conversation for any high-signal learnings that were NOT persisted during the session: direct corrections, explicit preferences, process demonstrations, or domain knowledge shared by the user. Ignore anything already saved to CLAUDE.md or memory files during this session.\n\nIf there are unpersisted learnings worth saving, respond with:\n{\"systemMessage\": \"Before this session ends — I noticed some learnings from this session that weren't saved: [brief list]. Would you like me to persist these using /remember-that before we wrap up?\"}\n\nIf everything valuable was already captured or there's nothing worth saving, output nothing.",
-            "timeout": 30
-          }
-        ]
-      }
-    ]
+    "SessionEnd": []
   }
 }
