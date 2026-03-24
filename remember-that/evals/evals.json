@@ -1,0 +1,22 @@
+{
+  "skill_name": "remember-that",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "You are mid-session with a user working on a Python API project. Earlier in the session, you wrote unit tests using unittest.mock for database operations. The user said 'no, don't mock the database — use the test database container, we got burned by mocks last quarter when a migration broke prod but tests passed.' You continued and later wrote another test with mocks. The user said 'I literally just told you not to mock. Use the docker postgres container for tests.' Now the user says: 'remember that'",
+      "expected_output": "Should identify the testing correction as high-signal (repeated, user frustrated), propose saving it to project CLAUDE.md as a testing convention, and possibly auto-memory as feedback. Should NOT propose saving one-off task details."
+    },
+    {
+      "id": 1,
+      "prompt": "You are working in the deploy-service project (at /tmp/remember-that-eval/test2-deploy-project). The user just walked you through their deployment process: '1. First run the integration tests with npm run test:integration. 2. Then build the docker image with make docker-build. 3. Push to ECR with make ecr-push. 4. Update the ECS task definition — but DON'T use the AWS console, use the deploy script at ./scripts/deploy.sh which handles the blue-green swap. 5. Always check the CloudWatch dashboard after deploy for at least 10 minutes.' The user then says: 'save this for next time so you remember the process'",
+      "expected_output": "Should discover the docs/runbooks/ directory and propose creating a deployment runbook there. Should ALSO add a concise note to CLAUDE.md about the deploy process (e.g., 'use scripts/deploy.sh, never AWS console'). Should capture the full 5-step process in the runbook.",
+      "files": ["/tmp/remember-that-eval/test2-deploy-project"]
+    },
+    {
+      "id": 2,
+      "prompt": "You are working in the auth-service project (at /tmp/remember-that-eval/test3-auth-project). During this session, you did a deep dive into the auth system and discovered: (a) the RBAC engine actually delegates to an external policy service called 'guardian' running on port 8443 — this isn't documented anywhere, (b) the JWT tokens have a custom claim 'org_id' that scopes permissions to an organization, (c) there's a race condition in session refresh where two concurrent requests can invalidate each other's sessions. The user also corrected you: 'always use make lint, not golangci-lint directly — make lint has extra checks.' The project already has CLAUDE.md with 'Run make lint before committing' in it. Now the user says: 'remember what we learned about the auth system'",
+      "expected_output": "Should route architecture discoveries (guardian service, org_id claim, race condition) to docs/architecture.md. Should detect that 'make lint' is already in CLAUDE.md and skip it or note it's already captured. Should NOT duplicate existing knowledge.",
+      "files": ["/tmp/remember-that-eval/test3-auth-project"]
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+[
+  {
+    "query": "ok remember that — we always need to run the e2e tests against staging before deploying, not just the unit tests",
+    "should_trigger": true
+  },
+  {
+    "query": "save this for next time. the whole process i just showed you for setting up the local dev environment — the docker compose trick with the volume mounts and the env file",
+    "should_trigger": true
+  },
+  {
+    "query": "i've told you three times now to use pnpm not npm in this repo. remember that going forward please",
+    "should_trigger": true
+  },
+  {
+    "query": "remember what we just learned about how the billing service talks to stripe — the webhook verification and the idempotency key pattern. none of that was documented",
+    "should_trigger": true
+  },
+  {
+    "query": "hey can you update the docs with what we discovered about the caching layer? turns out redis is only used for sessions, memcached handles the API response cache. i want this written down somewhere",
+    "should_trigger": true
+  },
+  {
+    "query": "don't forget this: the CI pipeline needs the GITHUB_TOKEN secret to be set manually for forked PRs. i've had to explain this to every new hire",
+    "should_trigger": true
+  },
+  {
+    "query": "actually you know what, save all the corrections from this session. you kept using the wrong table names and i had to fix them like 4 times",
+    "should_trigger": true
+  },
+  {
+    "query": "i just showed you my whole workflow for triaging sentry alerts — the way i filter by first_seen, check the breadcrumbs, then look at the release tag. can you capture that?",
+    "should_trigger": true
+  },
+  {
+    "query": "learn from this session. you initially tried to put the migrations in the wrong directory and then used the wrong migration tool. save those two things so we don't repeat this",
+    "should_trigger": true
+  },
+  {
+    "query": "can you read the file at src/utils/auth.ts and explain what the refreshToken function does",
+    "should_trigger": false
+  },
+  {
+    "query": "write a python script that converts CSV files to JSON, handling edge cases like quoted commas and unicode characters",
+    "should_trigger": false
+  },
+  {
+    "query": "fix the failing test in tests/api/test_users.py — it's timing out on the database connection setup",
+    "should_trigger": false
+  },
+  {
+    "query": "i need to refactor the payment processing module to use the strategy pattern instead of the big switch statement",
+    "should_trigger": false
+  },
+  {
+    "query": "can you help me understand the git log for this file? specifically who changed the retry logic last month and why",
+    "should_trigger": false
+  },
+  {
+    "query": "deploy the latest changes to staging using the deploy script",
+    "should_trigger": false
+  },
+  {
+    "query": "add a section to the README explaining how to run the project locally with docker compose",
+    "should_trigger": false
+  },
+  {
+    "query": "create a new CLAUDE.md for this project with our coding conventions — use 2-space indentation, prefer arrow functions, always use TypeScript strict mode",
+    "should_trigger": false
+  },
+  {
+    "query": "review the PR at https://github.com/myorg/myrepo/pull/247 and leave comments on anything that looks off",
+    "should_trigger": false
+  },
+  {
+    "query": "search the codebase for anywhere we're using deprecated API endpoints and make a list",
+    "should_trigger": false
+  }
+]

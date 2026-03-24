@@ -1,0 +1,6 @@
+{
+  "name": "remember-that",
+  "version": "0.1.0",
+  "description": "Reflect on sessions and persist learnings to the right documentation",
+  "skills": ["skills/remember-that/SKILL.md"]
+}
