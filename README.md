@@ -14,7 +14,7 @@ A curated marketplace of Claude Code skills and plugins.
 ### Add the marketplace
 
 ```
-/plugin marketplace add dylanOshima/skills
+/plugin marketplace add dylanOshima/dro-claude-marketplace
 ```
 
 ### Browse available skills
