@@ -1,8 +1,5 @@
 {
   "name": "remember-that",
   "version": "0.2.0",
-  "description": "Reflect on sessions and persist learnings to the right documentation",
-  "skills": ["skills/remember-that/SKILL.md"],
-  "commands": ["commands/remember-that.md"],
-  "hooks": ["hooks/hooks.json"]
+  "description": "Reflect on sessions and persist learnings to the right documentation"
 }
