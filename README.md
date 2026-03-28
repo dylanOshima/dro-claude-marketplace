@@ -8,6 +8,7 @@ A curated marketplace of Claude Code skills and plugins.
 |--------|-------------|
 | [pool-party](./pool-party) | Feature idea → clarification → planning → DAG task breakdown → parallel agent swarm |
 | [remember-that](./remember-that) | Reflect on sessions and persist learnings to the right documentation |
+| [brandy](./brand-design) | Interactive brand creation and design system generation for web and mobile apps |
 
 ## Installation
 

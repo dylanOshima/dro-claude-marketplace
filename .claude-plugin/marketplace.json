@@ -20,6 +20,14 @@
       "author": {
         "name": "droshima"
       }
+    },
+    {
+      "name": "brandy",
+      "description": "Interactive brand creation and design system generation for web and mobile apps.",
+      "source": "./brand-design",
+      "author": {
+        "name": "droshima"
+      }
     }
   ]
 }

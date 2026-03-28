@@ -1,0 +1,9 @@
+{
+  "name": "brandy",
+  "version": "0.1.0",
+  "description": "Interactive brand creation and design system generation for web and mobile apps",
+  "author": {
+    "name": "droshima"
+  },
+  "keywords": ["brand", "design-system", "design-tokens", "icons", "visual-identity"]
+}
