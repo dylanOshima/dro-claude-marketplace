@@ -1,0 +1,9 @@
+{
+  "name": "promptly",
+  "version": "0.1.0",
+  "description": "Prompt engineering workbench - generate, evaluate, and iterate on prompts against validation datasets",
+  "author": {
+    "name": "droshima"
+  },
+  "keywords": ["prompts", "evaluation", "optimization", "llm"]
+}

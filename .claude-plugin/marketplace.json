@@ -28,6 +28,14 @@
       "author": {
         "name": "droshima"
       }
+    },
+    {
+      "name": "promptly",
+      "description": "Prompt engineering workbench - generate, evaluate, and iterate on prompts against validation datasets.",
+      "source": "./promptly",
+      "author": {
+        "name": "droshima"
+      }
     }
   ]
 }
