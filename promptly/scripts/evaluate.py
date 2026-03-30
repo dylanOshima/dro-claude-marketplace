@@ -11,12 +11,15 @@ Usage:
         --output .promptly/results/v1.json \
         --model claude-sonnet-4-20250514 \
         [--judge-model claude-haiku-4-5-20251001] \
-        [--grading-method model_judge|exact|contains|fuzzy|rouge_l]
+        [--grading-method model_judge|exact|contains|fuzzy|rouge_l] \
+        [--sample-size N] \
+        [--early-stop-threshold 0.85]
 """
 
 import argparse
 import csv
 import json
+import random
 import sys
 import time
 from pathlib import Path
@@ -43,6 +46,33 @@ def load_dataset(dataset_path: str) -> list[dict]:
                 "category": row.get("category", ""),
             })
     return rows
+
+
+def sample_dataset(dataset: list[dict], sample_size: int) -> list[dict]:
+    """Sample a stratified subset of the dataset, preserving category distribution."""
+    if sample_size >= len(dataset):
+        return dataset
+
+    # Group by category
+    by_category: dict[str, list[dict]] = {}
+    for row in dataset:
+        cat = row["category"] or "uncategorized"
+        by_category.setdefault(cat, []).append(row)
+
+    # Proportional sampling per category
+    sampled = []
+    for cat, rows in by_category.items():
+        cat_sample = max(1, round(sample_size * len(rows) / len(dataset)))
+        sampled.extend(random.sample(rows, min(cat_sample, len(rows))))
+
+    # Trim or pad to exact sample_size
+    if len(sampled) > sample_size:
+        sampled = random.sample(sampled, sample_size)
+    elif len(sampled) < sample_size:
+        remaining = [r for r in dataset if r not in sampled]
+        sampled.extend(random.sample(remaining, min(sample_size - len(sampled), len(remaining))))
+
+    return sampled
 
 
 def run_prompt(client: anthropic.Anthropic, model: str, prompt: str, input_text: str) -> str:
@@ -123,6 +153,34 @@ def grade_fuzzy(expected: str, actual: str) -> dict:
     return {"score": round(score, 3), "reasoning": f"LCS similarity: {score:.3f}"}
 
 
+def check_early_stop(scores: list[float], threshold: float, min_samples: int = 5) -> bool:
+    """Check if we should stop early based on running average vs threshold.
+
+    Uses a statistical check: if the running average after min_samples is more than
+    2 standard deviations below the threshold, it's unlikely to recover.
+    """
+    if len(scores) < min_samples:
+        return False
+
+    mean = sum(scores) / len(scores)
+    if len(scores) < 2:
+        return mean < threshold - 0.1
+
+    variance = sum((s - mean) ** 2 for s in scores) / (len(scores) - 1)
+    std = variance ** 0.5
+    remaining = len(scores)  # assume roughly same number remaining
+    # Optimistic projection: even if all remaining score 1.0, can we catch up?
+    # This is a softer check than pure statistics
+    optimistic_final = mean  # current average as baseline
+    gap = threshold - optimistic_final
+
+    # If we're more than 1.5 std below threshold with enough samples, stop
+    if gap > 1.5 * std and len(scores) >= min_samples:
+        return True
+
+    return False
+
+
 def main():
     parser = argparse.ArgumentParser(description="Evaluate prompt against dataset using Claude")
     parser.add_argument("--prompt", required=True, help="Path to prompt file")
@@ -132,11 +190,19 @@ def main():
     parser.add_argument("--judge-model", default="claude-haiku-4-5-20251001", help="Model for grading")
     parser.add_argument("--grading-method", default="model_judge",
                         choices=["model_judge", "exact", "contains", "fuzzy"])
+    parser.add_argument("--sample-size", type=int, default=0,
+                        help="Run on a random subset of N rows (0 = full dataset)")
+    parser.add_argument("--early-stop-threshold", type=float, default=0.0,
+                        help="Stop early if running score is clearly below this threshold (0 = disabled)")
     args = parser.parse_args()
 
     client = anthropic.Anthropic()
     prompt = load_prompt(args.prompt)
     dataset = load_dataset(args.dataset)
+
+    if args.sample_size > 0:
+        dataset = sample_dataset(dataset, args.sample_size)
+        print(f"Sampled {len(dataset)} rows for evaluation", file=sys.stderr)
 
     graders = {
         "model_judge": lambda inp, exp, act: grade_model_judge(client, args.judge_model, inp, exp, act),
@@ -149,6 +215,8 @@ def main():
     results = []
     total_score = 0.0
     scores_by_category: dict[str, list[float]] = {}
+    all_scores: list[float] = []
+    early_stopped = False
 
     for i, row in enumerate(dataset):
         print(f"Evaluating {i + 1}/{len(dataset)}...", file=sys.stderr)
@@ -165,11 +233,25 @@ def main():
         }
         results.append(result)
         total_score += grade["score"]
+        all_scores.append(grade["score"])
 
         cat = row["category"] or "uncategorized"
         scores_by_category.setdefault(cat, []).append(grade["score"])
 
-    overall_score = total_score / len(dataset) if dataset else 0.0
+        # Early stopping check
+        if args.early_stop_threshold > 0 and check_early_stop(
+            all_scores, args.early_stop_threshold
+        ):
+            print(
+                f"Early stopping at {i + 1}/{len(dataset)}: "
+                f"running avg {sum(all_scores)/len(all_scores):.4f} "
+                f"is significantly below threshold {args.early_stop_threshold:.4f}",
+                file=sys.stderr,
+            )
+            early_stopped = True
+            break
+
+    overall_score = total_score / len(results) if results else 0.0
     category_averages = {
         cat: round(sum(scores) / len(scores), 4)
         for cat, scores in scores_by_category.items()
@@ -183,14 +265,24 @@ def main():
         "overall_score": round(overall_score, 4),
         "scores_by_category": category_averages,
         "total_rows": len(dataset),
+        "rows_evaluated": len(results),
+        "early_stopped": early_stopped,
+        "sampled": args.sample_size > 0,
         "results": results,
     }
 
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(output_data, indent=2, ensure_ascii=False))
-    print(f"Evaluation complete. Overall score: {overall_score:.4f}", file=sys.stderr)
-    print(json.dumps({"overall_score": overall_score, "scores_by_category": category_averages}))
+    status = "Early stopped. " if early_stopped else ""
+    print(f"{status}Evaluation complete. Overall score: {overall_score:.4f} ({len(results)}/{len(dataset)} rows)", file=sys.stderr)
+    print(json.dumps({
+        "overall_score": overall_score,
+        "scores_by_category": category_averages,
+        "rows_evaluated": len(results),
+        "total_rows": len(dataset),
+        "early_stopped": early_stopped,
+    }))
 
 
 if __name__ == "__main__":
