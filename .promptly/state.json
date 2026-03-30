@@ -1,0 +1,22 @@
+{
+  "run_id": "judge-prompt-2026-03-30",
+  "task": "Improve model-as-judge grading prompt for consistency and reasoning quality",
+  "status": "paused",
+  "config": {
+    "autonomy": "check-in",
+    "eval_backend": "local_claude",
+    "target_model": "claude-haiku-4-5-20251001",
+    "max_iterations": 10,
+    "target_score": 0.9,
+    "plateau_patience": 3
+  },
+  "grading": {
+    "method": "model_judge",
+    "judge_model": "claude-haiku-4-5-20251001",
+    "fallback": "rouge_l"
+  },
+  "current_version": 0,
+  "iterations": [],
+  "best_score": 0.8344,
+  "best_version": "v1"
+}

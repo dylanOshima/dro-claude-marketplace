@@ -1,0 +1,373 @@
+"input","expected_output","actual_output","expected_score","category"
+"How can I fix blank pull down  ""Console Settings"" menu after successful install of JazzSM 1.2.1.1 and WebSphere 8.5.5.9?
+
+WebSphere version 8.5.5.9 didn't include jar files that were available in previous releases of WebSphere that are required by DASH for various tasks.","The missing jar files are included in DASH 3.1.2.1 Cumulative Patch 5, which you can download from this site: 
+
+
+http://www-933.ibm.com/support/fixcentral/swg/selectFixes?parent=ibm~Tivoli∏uct=ibm/Tivoli/Jazz+for+Service+Management&release=1.1&platform=All&function=all [http://www-933.ibm.com/support/fixcentral/swg/selectFixes?parent=ibm~Tivoli&product=ibm/Tivoli/Jazz+for+Service+Management&release=1.1&platform=All&function=all]","Quite a specific issue!
+
+To help you resolve the blank ""Console Settings"" pull-down menu in JazzSM (IBM Dashboard Application Services Hub) 1.2.1.1 after a successful installation with WebSphere 8.5.5.9, let's break down the steps to address the missing jar files and potential configuration adjustments:
+
+### Understanding the Issue
+
+- **Cause**: Missing jar files in WebSphere 8.5.5.9 that are required by DASH (JazzSM).
+- **Symptom**: Blank ""Console Settings"" pull-down menu.
+
+### Step-by-Step Solution
+
+#### 1. **Identify Required JAR Files**
+First, you need to identify which specific JAR files are missing. Common culprits in similar scenarios include (but may not be limited to):
+   - `com.ibm.ws.prereq.jaxb.api_1.2.0.jar`
+   - `com.ibm.ws.prereq.jaxb.impl_1.2.0.jar`
+   - `com.ibm.jaxb.tools.jar` (for JAXB related operations)
+
+**Action**:
+- Check the JazzSM 1.2.1.1 documentation and release notes for specific dependencies.
+- Compare with the libraries provided in WebSphere 8.5.5.9.
+
+#### 2. **Obtain the Missing JAR Files**
+Since these files are not included in WebSphere 8.5.5.9, you'll need to source them from:
+   - **Previous WebSphere Versions**: If you have access to an earlier version of WebSphere (e.g., 8.5.5.5 or 8.0.x) where these JARs were included, you can copy them from there.
+   - **IBM Support or Fix Central**: Reach out to IBM Support with your scenario. They might provide the necessary JAR files or direct you to a download location.
+   - **Open Source Alternatives (if applicable)**: For some dependencies, open-source alternatives might exist (e.g., JAXB API/Impl from Eclipse or Maven repositories). **Exercise caution** as compatibility must be verified.
+
+**Action**:
+- Secure the missing JAR files through one of the above methods.
+
+#### 3. **Add JAR Files to WebSphere**
+Once you have the JAR files, add them to your WebSphere environment:
+   - **Shared Library Approach**:
+     1. In the WebSphere Administrative Console, navigate to `Environment` > `Shared Libraries`.
+     2. Create a new shared library (e.g., `JazzSM_DASH_Libs`).
+     3. Add the obtained JAR files to this library.
+     4. Associate this shared library with your JazzSM application (or the specific server if it's not application-specific).
+
+   - **Alternatively, add to the Application Server Classpath** (less recommended due to broader scope of impact):
+     1. Navigate to `Servers` > `Server Types` > `WebSphere application servers` > `[Your Server Name]`.
+     2. Under `Server Infrastructure`, click on `Java and Process Management` > `Process Definition`.
+     3. In the `Java Virtual Machine` section, update the `Classpath` field to include the path to your JAR files.
+
+**Action**:
+- Implement one of the above methods to make the JAR files accessible to your JazzSM application.
+
+#### 4. **Restart and Verify**
+- **Restart** your WebSphere server to ensure the changes take effect.
+- **Verify** the ""Console Settings"" pull-down menu in JazzSM to see if the issue is resolved.
+
+### Additional Troubleshooting
+- **Check Logs**: For any errors, inspect WebSphere SystemOut.log and JazzSM logs for clues.
+- **IBM Support**: If the issue persists, engaging with IBM Support might provide more tailored assistance or patches.
+
+By following these steps, you should be able to resolve the blank ""Console Settings"" menu issue in JazzSM 1.2.1.1 running on WebSphere 8.5.5.9.","0.3333","techqa"
+"Unable to unistall Data Studio 3.1.1 on Windows
+
+
+We use Data Studio 3.1.1.0 with DB2 WSE V9.7 FP11 on Windows 2008. While trying to new version of Data Studio 4.1.2, we are able to install it successfully. But unable to uninstall the existing 3.1.1.0, getting the jvm error ""Could not find the main class"". How we can delete it?","Please try to uninstall all products including Install Manager 
+(IM) then reinstall IM and Data Studio 4.1.2.","It seems like you're having trouble uninstalling Data Studio 3.1.1.0 due to a Java Virtual Machine (JVM) error. Here are a few steps you can try to resolve this issue:
+
+1. **Repair the Java Runtime Environment (JRE):** The error might be due to a corrupted JRE. Try repairing the JRE and then attempt to uninstall Data Studio again.
+
+2. **Manually uninstall Data Studio:** If the uninstaller is not working, you can try manually removing Data Studio. However, this should be done with caution as it involves directly modifying your system's files and registry. Here are the steps:
+
+   a. Close all running applications, including Data Studio.
+
+   b. Go to the Control Panel > Programs > Programs and Features. Find Data Studio in the list of installed programs and note down its installation path.
+
+   c. Navigate to the installation path and delete the Data Studio folder.
+
+   d. Open the Registry Editor by typing `regedit` in the Run dialog box (Win + R).
+
+   e. In the Registry Editor, navigate to `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall` and look for an entry related to Data Studio. Delete this entry.
+
+   f. Restart your computer and check if Data Studio has been removed.
+
+3. **Use a third-party uninstaller:** If the above steps don't work, you can try using a third-party uninstaller like Revo Uninstaller or IObit Uninstaller. These tools can help remove stubborn programs and their leftover files.
+
+4. **Contact IBM Support:** If none of the above steps work, it might be best to contact IBM Support for further assistance. They can provide you with specific instructions or tools to uninstall Data Studio.","0.5","techqa"
+"ICC Configuration Store Service is hung?
+
+ICC Configuration Store Service is hung and is not responding to start or stop commands. This was observed due to a potential issue with server running out of disk space.  What is causing this?","Transaction log gets corrupted when IBM Content Collector server runs out of disk space.","A hung service can be frustrating!
+
+The ICC Configuration Store Service is a Windows service that manages the configuration store for Internet Connection Sharing (ICS) and Internet Connection Firewall (ICF). If it's hung and not responding to start or stop commands, it's likely due to a resource issue or a configuration problem.
+
+Given that you mentioned a potential issue with the server running out of disk space, here are some possible causes:
+
+1. **Disk Space**: As you mentioned, running out of disk space can cause the service to hang. The service might be trying to write to the disk, but there's no free space available, causing it to freeze.
+2. **Corrupted Configuration Store**: The configuration store might be corrupted, causing the service to malfunction. This could be due to a previous failure, a power outage, or a software issue.
+3. **Resource Contention**: Other processes or services might be competing for system resources, such as CPU, memory, or disk I/O, causing the ICC Configuration Store Service to hang.
+4. **Configuration Issues**: Incorrect or incomplete configuration settings might be causing the service to malfunction.
+5. **Driver Issues**: Outdated or corrupted network drivers might be causing the service to hang.
+
+To troubleshoot the issue, you can try the following:
+
+1. **Check Disk Space**: Verify that the server has sufficient disk space available. If not, consider increasing the disk space or deleting unnecessary files.
+2. **Restart the Service**: Try restarting the ICC Configuration Store Service to see if it resolves the issue.
+3. **Check Event Logs**: Review the Windows Event Logs for any error messages related to the ICC Configuration Store Service.
+4. **Run a System File Checker (SFC)**: Run the SFC tool to scan for corrupted system files and replace them if necessary.
+5. **Check for Driver Updates**: Ensure that the network drivers are up-to-date and functioning correctly.
+6. **Consider a System Restore**: If the issue started after a recent system change or update, consider restoring the system to a previous point when the service was working correctly.
+
+If none of these steps resolve the issue, you may need to investigate further or seek assistance from a Windows expert or Microsoft support.","0.1667","techqa"
+"Help with Security Bulletin: Malformed client flows abend MQTT channel (CVE-2015-4941)
+
+Help with Security Bulletin: Malformed client flows abend MQTT channel (CVE-2015-4941)","CVEID: CVE-2015-4941 [http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-4941]
+DESCRIPTION: IBM WebSphere MQ could allow a remote attacker to crash the MQXR service due to incorrect handling of abbreviated TLS handshake.
+CVSS Base Score: 5
+CVSS Temporal Score: See https://exchange.xforce.ibmcloud.com/vulnerabilities/104514 [https://exchange.xforce.ibmcloud.com/vulnerabilities/104514] for the current score
+CVSS Environmental Score*: Undefined
+CVSS Vector: (AV:N/AC:L/Au:N/C:N/I:N/A:P)","The security bulletin describes a vulnerability in IBM WebSphere MQ, identified as CVE-2015-4941. This vulnerability allows a remote attacker to crash the MQXR service due to incorrect handling of abbreviated TLS handshake. The affected products and versions are:
+
+- IBM WebSphere MQ 8.0.0.3 and earlier maintenance levels
+- IBM WebSphere MQ 7.5.0.5 and earlier maintenance levels
+- IBM WebSphere MQ 7.1.0.6 and earlier maintenance levels
+
+To remediate this vulnerability, you should apply the following fixes:
+
+- For WebSphere MQ 8.0, apply fixpack 8.0.0.4
+- For WebSphere MQ 7.5, apply interim ifix IT09866
+- For WebSphere MQ 7.1, apply fixpack 7.1.0.7
+
+There are no known workarounds or mitigations for this vulnerability. The CVSS Base Score for this vulnerability is 5, indicating a medium severity. However, the CVSS Environmental Score is customer environment specific and will ultimately impact the Overall CVSS Score. Customers are responsible for assessing the impact of this vulnerability in their environments.","0.3333","techqa"
+"How do I change the default 'fit content by' behaviour of Daeja viewer in IBM Content Navigator, to fit content by height or width?
+
+How do I change the default 'fit content by' behaviour of Daeja viewer in IBM Content Navigator v2.0.2, to fit content by height or width?","In the ..navigator.war/applets/filenetViewer_properties.jsp file, set the value of the parameter 'scale' as follows 
+
+To fit content by width, specify - scale: ""ftow"",
+To fit content by height, specify - scale: ""ftoh"",
+
+Here's another way to modify the behaviour: 
+
+ * make the same changes above to the filenetViewer_properties.jsp under ECMClient\configure\explodedformat\navigator\applets folder. 
+ * Rebuild and redeploy the ear file. 
+ * Restart the application server
+
+
+Save the changes and they should get picked up when the viewer is re-launched.","To change the default 'fit content by' behavior of Daeja viewer in IBM Content Navigator v2.0.2 to fit content by height or width, follow these steps:
+
+1. Locate the `filenetViewer_properties.jsp` file in the `navigator.war/applets/` directory.
+2. Open the file and find the parameter 'scale'.
+3. To fit content by width, set the value of 'scale' to `""ftow""`.
+4. To fit content by height, set the value of 'scale' to `""ftoh""`.
+5. Save the changes and relaunch the viewer.
+
+Alternatively, you can follow these steps:
+
+1. Make the same changes to the `filenetViewer_properties.jsp` file located in the `ECMClient\configure\explodedformat\navigator\applets` folder.
+2. Rebuild and redeploy the ear file.
+3. Restart the application server.
+
+The changes should be picked up when the viewer is relaunched.","1.0","techqa"
+"Where do I find list of all document formats indexable and supported by ICC Content Search Services Support (CSSS)?
+
+Where do I find list of all document formats indexable and supported by ICC Content Search Services Support (CSSS)?","Content Search Services uses Oracle Outside In Technology for text conversion. The Indexable document types depend on the version of the Oracle product that is used in Content Search Services in Content Platform Engine. The CSS V5.2.1 uses Outside In V8.4.1
+
+You can reference this link to check what document types CSS/Outside In supports: 
+
+
+http://www-01.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.ce.admin.tasks.doc/cbr/csscbr_indexable_documenttype.htm?lang=en","According to the provided context documents, the list of all document formats indexable and supported by ICC Content Search Services Support (CSSS) can be found by referencing the following link, which provides information on the document types supported by Oracle Outside In Technology (used by CSS):
+
+**http://www-01.ibm.com/support/knowledgecenter/SSNW2F_5.2.1/com.ibm.p8.ce.admin.tasks.doc/cbr/csscbr_indexable_documenttype.htm?lang=en**
+
+This information is provided in the first context document titled ""IBM File Formats for IBM Content Collector (ICC) Content Search Services Support - United States"", under the answer to the question ""How do I find list of all document formats supported by ICC Content Search Services Support (CSSS)?""","1.0","techqa"
+"Error TASK001X while upgrading Portal 8.0.0.1 to 8.0.0.1 CF14 during import-nodes sub-task
+
+ Error TASK001X while upgrading Portal 8.0.0.1 to 8.0.0.1 CF14 during import-nodes sub-task","Please make the following change in the WAS Admin Console...
+Applications > WebSphere enterprise applications >
+JavaContentRepository > Target specific application status > Check the
+box for the WebSphere_Portal server > Click Enable Auto Start > Save
+changes > restart Portal
+
+After making this change please attempt the CF upgrade again.","The error TASK001X during the import-nodes sub-task is caused by the autostart being disabled on several applications, which affects the WCM startup. The error message indicates a problem with remote task execution, and the server log shows a FileNotFoundException for the /jcr/remotetask file. This issue is related to the JavaContentRepository.ear application.","0.8333","techqa"
+"SAP Agent suddenly crashed
+
+
+
+Hello, my SAP Agent 7.1.1.1 crashed suddenly. I was able to restart it and since then it is working smoothly, but I would like to understand the root cause to avoid any reoccurrence.  
+
+Any idea ?","Defect: 58382 
+Abstract: Exception condition ""GWY_COMMUNICATION_FAILURE"" raised.
+Additional Information: ""GWY_COMMUNICATION_FAILURE"" has been 
+gracefully handled for the /IBMMON/ITM_GWY_CONNECTIONS 
+function module towards the Gateway Connections attribute 
+group.","The documents do not provide enough information to determine the root cause of the SAP Agent 7.1.1.1 crash. The provided documents are related to a specific issue (APAR IV06898) that occurred in ITM for Applications 6.2 IF0013 on AIX 6.1, where the SAP agent crashed when the monitored SAP instance was stopped. However, this issue is not directly related to the SAP Agent 7.1.1.1 crash you are experiencing.","0.0","techqa"
+"P8 CPE 5.2.1 error:  FNRCC0110E - ERROR FixedContentProviderCache.getProvider failed to init provider
+
+
+
+New P8 CPE 5.2.1 install does not see the Centera Fixed Storage. The following error is returned:
+
+FNRCC0110E: CONTENT_FCP_OPERATION_FAILED: The [initialize] operation on the fixed content provider [com.filenet.engine.content.fcprovider.centera.CenteraFCP(0)] failed. FPLibrary (Not found in java.library.path)
+
+What is the cause?","Changes made to the setCenteraLibPath.sh or setCenteraLibPath were not picked up by the WAS startup script. The WAS Content Engine instance was restarted from within the WAS console and not from the command line. In this Instance the setCenteraLibPath.sh file was added to the setupcmdLine.sh file but was not recognized . This caused the CenteraSDK path to not be loaded.","The cause of the error is that the Content Platform Engine is unable to locate or load the EMC Centera SDK library. This is indicated by the ""java.lang.UnsatisfiedLinkError: no FPLibrary in java.library.path"" error message in the p8_server_error.log. This error occurs when the changes made to the setCenteraLibPath.sh or setCenteraLibPath.bat file are not picked up by the WAS startup script, causing the CenteraSDK path to not be loaded. The solution is to restart WebSphere from the IBM console after making any changes to the setCenteraLibPath.sh or setCenteraLibPath.bat file.","0.6667","techqa"
+"Help with Security Bulletin: WMB & IIB are affected by Open Source Tomcat vulnerability (CVE-2016-3092)
+
+I need to understand details regarding Security Bulletin: WebSphere Message Broker and IBM Integration Bus are affected by Open Source Tomcat vulnerability (CVE-2016-3092). Where can I find this information?","CVEID: CVE-2016-3092 [http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-3092]
+DESCRIPTION: Apache Tomcat is vulnerable to a denial of service, caused by an error in the Apache Commons FileUpload component. By sending file upload requests, an attacker could exploit this vulnerability to cause the server to become unresponsive.
+CVSS Base Score: 5.3
+CVSS Temporal Score: See https://exchange.xforce.ibmcloud.com/vulnerabilities/114336 [https://exchange.xforce.ibmcloud.com/vulnerabilities/114336] for the current score
+CVSS Environmental Score*: Undefined
+CVSS Vector: (CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L)","Based on the provided Context Document, which is the actual Security Bulletin you're inquiring about, the details regarding the vulnerability (CVE-2016-3092) affecting WebSphere Message Broker (WMB) and IBM Integration Bus (IIB) can be found within the document itself. Here’s a breakdown of where to find specific types of information within the bulletin:
+
+1. **Vulnerability Overview**:
+   - **Location in Document**: Under ""VULNERABILITY DETAILS""
+   - **Information Available**: CVE ID, Description of the vulnerability, CVSS scores (Base, Temporal, and Environmental), and CVSS Vector.
+
+2. **Affected Products and Versions**:
+   - **Location in Document**: Under ""AFFECTED PRODUCTS AND VERSIONS""
+   - **Information Available**: Lists specific versions of IBM Integration Bus and WebSphere Message Broker that are affected.
+
+3. **Remediation/Fixes**:
+   - **Location in Document**: Under ""REMEDIATION/FIXES""
+   - **Information Available**: Provides interim fix information, including how to obtain fixes from IBM Fix Central for all platforms, and planned fix pack releases for each affected product version.
+
+4. **Additional Resources for Understanding the Vulnerability**:
+   - **Location in Document**: Under ""REFERENCES""
+   - **Information Available**: Links to the Complete CVSS v3 Guide and On-line Calculator v3 for deeper understanding of CVSS scores.
+
+5. **Staying Informed About Future Security Bulletins**:
+   - **Location in Document**: Under ""GET NOTIFIED ABOUT FUTURE SECURITY BULLETINS""
+   - **Information Available**: Instructions on how to subscribe to My Notifications for important product support alerts.
+
+Given that the document itself is the source of the information you're seeking, you don't need to look elsewhere for the details regarding this specific Security Bulletin. If you have more targeted questions based on the content of the bulletin, feel free to ask!","0.0","techqa"
+"Summarize: The Amazon rainforest, often called the ""lungs of the Earth,"" produces about 20% of the world's oxygen. It spans nine countries, with Brazil holding the largest share. Deforestation driven by agriculture, logging, and urbanization has destroyed roughly 17% of the forest in the last 50 years, threatening biodiversity and accelerating climate change.","The Amazon rainforest produces ~20% of Earth's oxygen, spans nine countries, and has lost about 17% of its area in 50 years due to deforestation from agriculture, logging, and urbanization, threatening biodiversity and worsening climate change.","The Amazon rainforest, also known as the lungs of the Earth, produces roughly 20% of the world's oxygen and spans nine countries, mostly Brazil. Over the past 50 years, approximately 17% of the forest has been lost to deforestation driven by agriculture, logging, and urbanization, which threatens biodiversity and contributes to climate change.","1.0","summarization"
+"Summarize: Antibiotics are medicines that kill or inhibit the growth of bacteria. They have saved millions of lives since Alexander Fleming discovered penicillin in 1928. However, overuse and misuse have led to antibiotic resistance, a growing global health crisis where bacteria evolve to survive antibiotic treatment, making infections harder or impossible to treat.","Antibiotics, discovered with penicillin in 1928, kill bacteria and have saved millions of lives. Overuse and misuse have created antibiotic resistance, a global health crisis where bacteria evolve to survive treatment.","Antibiotics are drugs used to treat bacterial infections and have been crucial to modern medicine. Antibiotic resistance is an emerging problem caused by the overuse of these drugs.","1.0","summarization"
+"Summarize: The stock market experienced extreme volatility throughout 2022 as central banks worldwide raised interest rates aggressively to combat inflation, which reached 40-year highs in the United States. The S&P 500 fell more than 19% for the year, its worst annual performance since 2008. Technology stocks were hit especially hard as rising rates reduced the present value of future earnings.","In 2022, aggressive interest rate hikes to fight 40-year-high inflation caused extreme stock market volatility. The S&P 500 fell over 19%, its worst year since 2008, with technology stocks especially hard-hit as rising rates cut into future earnings valuations.","2022 was a bad year for the stock market due to inflation and rising interest rates. The S&P 500 fell by more than 19%.","0.5","summarization"
+"Summarize: In 1969, NASA's Apollo 11 mission successfully landed astronauts Neil Armstrong and Buzz Aldrin on the Moon, while Michael Collins orbited above. Armstrong became the first human to walk on the lunar surface, famously saying ""That's one small step for man, one giant leap for mankind."" The mission lasted eight days and safely returned all three astronauts to Earth.","Apollo 11 in 1969 landed Neil Armstrong and Buzz Aldrin on the Moon while Michael Collins orbited. Armstrong became the first human to walk on the Moon, quoting his famous line. All three astronauts returned safely after eight days.","In 1969, Apollo 11 landed on the Moon. Neil Armstrong was the first person to walk on the lunar surface and said a famous quote about mankind.","0.5","summarization"
+"Summarize: Photosynthesis is the process by which plants, algae, and some bacteria convert light energy — usually from the sun — into chemical energy stored as glucose. The process takes place primarily in chloroplasts, using carbon dioxide from the air and water from the soil. Oxygen is released as a byproduct, which is essential for most life on Earth.","Photosynthesis converts light energy into glucose using CO2 and water, occurring in chloroplasts. Oxygen is released as a byproduct and is vital to most life on Earth.","Photosynthesis is how plants make food using sunlight.","0.0","summarization"
+"Summarize: The human immune system is a complex network of cells, tissues, and organs that defends the body against pathogens such as bacteria, viruses, and fungi. It consists of two main branches: the innate immune system, which provides a rapid, non-specific response, and the adaptive immune system, which develops targeted responses and immunological memory over time.","The human immune system defends against pathogens through two branches: the innate system (rapid, non-specific) and the adaptive system (targeted responses with immunological memory).","The immune system defends the body. It has two parts: innate and adaptive immunity.","0.33","summarization"
+"Summarize: Machine learning is a subset of artificial intelligence in which systems learn from data to improve their performance on tasks without being explicitly programmed. Common approaches include supervised learning, where models train on labeled data; unsupervised learning, which finds patterns in unlabeled data; and reinforcement learning, where agents learn by receiving rewards or penalties for their actions.","Machine learning lets systems learn from data without explicit programming. Key approaches are supervised learning (labeled data), unsupervised learning (unlabeled pattern-finding), and reinforcement learning (reward-based agent training).","Machine learning is an AI technique where computers learn from data. There are several types including supervised, unsupervised, and reinforcement learning.","0.67","summarization"
+"Summarize: Sleep plays a critical role in physical and mental health. During sleep, the brain consolidates memories, the body repairs tissues, and the immune system is strengthened. Chronic sleep deprivation has been linked to increased risk of obesity, heart disease, diabetes, and mental health disorders. Adults are generally recommended to get 7–9 hours of sleep per night.","Sleep consolidates memories, repairs the body, and strengthens immunity. Chronic deprivation raises risks of obesity, heart disease, diabetes, and mental illness. Adults need 7–9 hours nightly.","Sleep is important for health. Not getting enough sleep can cause various health problems including heart disease and obesity.","0.0","summarization"
+"Summarize: The Great Barrier Reef is the world's largest coral reef system, stretching over 2,300 kilometers along Australia's northeast coast. It is home to thousands of species of fish, corals, and other marine life. Rising ocean temperatures due to climate change have caused repeated coral bleaching events, killing large portions of the reef and threatening its long-term survival.","The Great Barrier Reef, the world's largest coral reef at 2,300 km along Australia's coast, hosts thousands of marine species. Climate change-driven ocean warming has triggered repeated bleaching events, killing large reef sections and threatening its survival.","Australia has the Great Barrier Reef, which is very large. Climate change is damaging the reef.","0.0","summarization"
+"Summarize: Bitcoin, created in 2009 by the pseudonymous Satoshi Nakamoto, was the first decentralized cryptocurrency. It operates on a peer-to-peer network using blockchain technology to record transactions without a central authority. Bitcoin's supply is capped at 21 million coins, and new coins are issued through a process called mining, where computers compete to solve complex mathematical puzzles.","Bitcoin is the first decentralized cryptocurrency, created in 2009 by Satoshi Nakamoto. It uses blockchain on a peer-to-peer network, has a hard cap of 21 million coins, and issues new coins via mining.","Bitcoin is a decentralized digital currency created by Satoshi Nakamoto in 2009. It uses blockchain technology and has a fixed supply of 21 million coins obtained through mining.","1.0","summarization"
+"Classify this text: ""I can't believe how terrible the customer service was. Waited 45 minutes and got zero help."" Choose from: positive, negative, neutral.","negative","negative","1.0","classification"
+"Classify this text: ""The package arrived two days early and was packaged securely. Everything was exactly as described."" Choose from: positive, negative, neutral.","positive","positive","1.0","classification"
+"Classify this text: ""The product works as expected. Nothing special, but it does the job."" Choose from: positive, negative, neutral.","neutral","positive","0.0","classification"
+"Classify this email as spam or not spam: ""Congratulations! You have been selected to receive a $1,000 gift card. Click here to claim your prize now!""","spam","not spam","0.0","classification"
+"Classify this news headline into a category: ""Fed raises interest rates by 75 basis points for third consecutive meeting."" Choose from: politics, business/finance, sports, technology, health.","business/finance","business/finance","1.0","classification"
+"Classify this text by language: ""Le soleil brille aujourd'hui et il fait très chaud.""","French","Spanish","0.0","classification"
+"Classify the sentiment of this review: ""The food was decent but nothing remarkable. Service was a bit slow but friendly. I might go back."" Choose from: positive, negative, mixed.","mixed","positive","0.5","classification"
+"Classify this support ticket by urgency: ""Hi, I noticed my invoice for last month seems to have a small discrepancy. Not urgent, just want to sort it out when you get a chance."" Choose from: low, medium, high.","low","medium","0.5","classification"
+"Classify the intent of this user message: ""Can you show me how to reset my password?"" Choose from: complaint, information request, how-to request, purchase intent.","how-to request","how-to request","1.0","classification"
+"Classify this medical symptom description as an emergency or non-emergency: ""Patient reports mild intermittent headache for three days. No fever, vision changes, or neck stiffness.""","non-emergency","emergency","0.0","classification"
+"Extract the name, date, and location from: ""Dr. Sarah Collins will present her research on neuroplasticity at the Stanford Neuroscience Symposium on April 14, 2025.""","Name: Dr. Sarah Collins; Date: April 14, 2025; Location: Stanford Neuroscience Symposium","Name: Dr. Sarah Collins; Date: April 14, 2025; Location: Stanford Neuroscience Symposium","1.0","extraction"
+"Extract all email addresses from: ""Please contact support at help@example.com or reach our billing team at billing@example.com for invoice issues.""","help@example.com, billing@example.com","help@example.com, billing@example.com","1.0","extraction"
+"Extract the product name, price, and discount from: ""The Sony WH-1000XM5 headphones are currently listed at $349.99, marked down from the original $399.99.""","Product: Sony WH-1000XM5; Price: $349.99; Discount: $50.00 (from $399.99)","Product: Sony WH-1000XM5; Price: $349.99","0.5","extraction"
+"Extract all named entities (people, organizations, locations) from: ""Elon Musk's company SpaceX successfully launched a Falcon 9 rocket from Cape Canaveral last Tuesday.""","People: Elon Musk; Organizations: SpaceX; Locations: Cape Canaveral","People: Elon Musk; Companies: SpaceX; Places: Cape Canaveral; Vehicle: Falcon 9","0.67","extraction"
+"Extract the key dates and events from: ""The company was founded in 2010. It launched its flagship product in 2013, went public in 2018, and was acquired by a larger firm in 2023.""","2010: company founded; 2013: flagship product launched; 2018: went public; 2023: acquired","2010: founded; 2023: acquired","0.5","extraction"
+"Extract the ingredients and quantities from: ""To make the sauce, combine 2 cups of tomatoes, 1 tablespoon of olive oil, 3 cloves of garlic, and half a teaspoon of salt.""","2 cups tomatoes; 1 tablespoon olive oil; 3 cloves garlic; 0.5 teaspoon salt","tomatoes, olive oil, garlic, salt","0.33","extraction"
+"Extract the flight details from: ""Your booking is confirmed. Flight AA204 departs New York JFK on June 3rd at 08:15 and arrives in London Heathrow at 20:40 local time.""","Flight: AA204; Departure: New York JFK, June 3rd, 08:15; Arrival: London Heathrow, 20:40","Flight number: AA204; Origin: JFK; Destination: Heathrow; Date: June 3rd; Departure time: 08:15; Arrival time: 20:40","1.0","extraction"
+"Extract all monetary values from: ""The contract is valued at $2.4 million. The initial deposit of $240,000 is due within 30 days, with the remaining $2,160,000 payable upon delivery.""","$2,400,000 (total contract); $240,000 (initial deposit); $2,160,000 (remaining balance)","$2.4 million","0.0","extraction"
+"Extract the job title, company, and required skills from: ""We are hiring a Senior Data Engineer at Acme Corp. The ideal candidate has 5+ years of experience with Python, SQL, and Apache Spark.""","Job Title: Senior Data Engineer; Company: Acme Corp; Skills: Python, SQL, Apache Spark","Company: Acme Corp; Skills: Python, SQL, Spark","0.5","extraction"
+"Extract structured key-value pairs from this configuration string: ""host=db.prod.example.com port=5432 dbname=analytics user=readonly timeout=30""","host: db.prod.example.com; port: 5432; dbname: analytics; user: readonly; timeout: 30","host=db.prod.example.com, port=5432, user=readonly","0.0","extraction"
+"Write a function that takes a list of integers and returns the two numbers that sum to zero. Return None if no such pair exists.","def find_zero_sum_pair(nums):
+    seen = set()
+    for n in nums:
+        if -n in seen:
+            return (n, -n)
+        seen.add(n)
+    return None","def find_zero_sum_pair(nums):
+    seen = set()
+    for n in nums:
+        if -n in seen:
+            return (n, -n)
+        seen.add(n)
+    return None","1.0","code"
+"Write a function that checks whether a given string is a palindrome (ignoring case and spaces).","def is_palindrome(s):
+    cleaned = s.replace(' ', '').lower()
+    return cleaned == cleaned[::-1]","def is_palindrome(s):
+    s = s.lower().replace(' ', '')
+    return s == s[::-1]","1.0","code"
+"Write a function that flattens a nested list of arbitrary depth into a single flat list.","def flatten(lst):
+    result = []
+    for item in lst:
+        if isinstance(item, list):
+            result.extend(flatten(item))
+        else:
+            result.append(item)
+    return result","def flatten(lst):
+    flat = []
+    for item in lst:
+        if type(item) == list:
+            flat += flatten(item)
+        else:
+            flat.append(item)
+    return flat","0.67","code"
+"Write a Python function that reads a JSON file and returns its contents as a dictionary. Handle the case where the file does not exist.","import json
+import os
+
+def read_json(filepath):
+    if not os.path.exists(filepath):
+        return None
+    with open(filepath, 'r') as f:
+        return json.load(f)","import json
+
+def read_json(filepath):
+    with open(filepath, 'r') as f:
+        return json.load(f)","0.5","code"
+"Write a function that returns the nth Fibonacci number using memoization.","def fib(n, memo={}):
+    if n in memo:
+        return memo[n]
+    if n <= 1:
+        return n
+    memo[n] = fib(n-1, memo) + fib(n-2, memo)
+    return memo[n]","def fib(n):
+    if n <= 1:
+        return n
+    return fib(n-1) + fib(n-2)","0.5","code"
+"Write a function that groups a list of dictionaries by a given key.","def group_by(items, key):
+    result = {}
+    for item in items:
+        val = item.get(key)
+        if val not in result:
+            result[val] = []
+        result[val].append(item)
+    return result","def group_by(data, key):
+    groups = {}
+    for d in data:
+        k = d[key]
+        groups.setdefault(k, []).append(d)
+    return groups","1.0","code"
+"Write a function that finds the longest common prefix among a list of strings.","def longest_common_prefix(strs):
+    if not strs:
+        return ''
+    prefix = strs[0]
+    for s in strs[1:]:
+        while not s.startswith(prefix):
+            prefix = prefix[:-1]
+        if not prefix:
+            return ''
+    return prefix","def longest_common_prefix(strs):
+    result = ''
+    for chars in zip(*strs):
+        if len(set(chars)) == 1:
+            result += chars[0]
+    return result","0.33","code"
+"Write a function that converts a snake_case string to camelCase.","def to_camel_case(s):
+    parts = s.split('_')
+    return parts[0] + ''.join(p.capitalize() for p in parts[1:])","def to_camel_case(s):
+    return ''.join(word.capitalize() for word in s.split('_'))","0.5","code"
+"Write a function that takes a sentence and returns a dictionary of word frequencies.","def word_freq(sentence):
+    freq = {}
+    for word in sentence.lower().split():
+        freq[word] = freq.get(word, 0) + 1
+    return freq","def word_freq(s):
+    words = s.split()
+    return {w: words.count(w) for w in set(words)}","0.67","code"
+"Write a function that rotates a list to the right by k positions.","def rotate_right(lst, k):
+    if not lst:
+        return lst
+    k = k % len(lst)
+    return lst[-k:] + lst[:-k]","def rotate_right(lst, k):
+    for _ in range(k):
+        lst = [lst[-1]] + lst[:-1]
+    return lst","0.0","code"
+"A bat and a ball cost $1.10 in total. The bat costs $1.00 more than the ball. How much does the ball cost?","The ball costs $0.05. If the ball is x, the bat is x + $1.00. Together: 2x + $1.00 = $1.10, so 2x = $0.10, x = $0.05.","The ball costs $0.05. Setting up the equation: ball = x, bat = x + 1.00. Total: 2x + 1.00 = 1.10, so x = 0.05.","1.0","reasoning"
+"If all Bloops are Razzies and all Razzies are Lazzies, are all Bloops definitely Lazzies?","Yes. By transitivity: all Bloops are Razzies, and all Razzies are Lazzies, so all Bloops must be Lazzies.","Yes, all Bloops are Lazzies because if Bloops are a subset of Razzies, and Razzies are a subset of Lazzies, then Bloops are necessarily a subset of Lazzies.","1.0","reasoning"
+"A train travels at 60 mph. How long does it take to travel 150 miles?","Time = Distance / Speed = 150 / 60 = 2.5 hours.","2.5 hours","1.0","reasoning"
+"You have a 3-liter jug and a 5-liter jug. How do you measure exactly 4 liters of water?","Fill the 5L jug. Pour into 3L jug until full (5L has 2L left). Empty the 3L jug. Pour the 2L from the 5L jug into the 3L jug. Fill the 5L jug again. Pour from the 5L jug into the 3L jug (which already has 2L) until full — this pours 1L, leaving exactly 4L in the 5L jug.","Fill the 5-liter jug, pour into 3-liter until full. You now have 2L in the 5L jug. Empty the 3L jug. Pour the 2L into the 3L jug. Fill the 5L jug again and pour 1L into the 3L jug to fill it. The 5L jug now holds exactly 4 liters.","1.0","reasoning"
+"What is 15% of 240?","15% of 240 = 0.15 × 240 = 36.","36","1.0","reasoning"
+"A store is having a 30% off sale. An item originally costs $80. What is the sale price?","Discount = 30% of $80 = $24. Sale price = $80 - $24 = $56.","$56","0.67","reasoning"
+"There are 5 red balls and 3 blue balls in a bag. What is the probability of drawing a blue ball at random?","P(blue) = 3 / (5 + 3) = 3/8 = 0.375.","3/8","0.67","reasoning"
+"If a car depreciates by 15% per year and was bought for $20,000, what is its value after 2 years?","After year 1: $20,000 × 0.85 = $17,000. After year 2: $17,000 × 0.85 = $14,450.","$17,000","0.5","reasoning"
+"A farmer has both chickens and cows. He counts 20 heads and 56 legs. How many chickens and how many cows are there?","Let c = cows, ch = chickens. c + ch = 20 and 4c + 2ch = 56. Solving: 2c = 16, c = 8 cows and ch = 12 chickens.","There are 14 cows and 6 chickens.","0.0","reasoning"
+"A sequence follows the rule: each term is the sum of the previous two. The first two terms are 2 and 3. What is the 6th term?","Sequence: 2, 3, 5, 8, 13, 21. The 6th term is 21.","The 6th term is 13.","0.0","reasoning"
