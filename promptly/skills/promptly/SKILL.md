@@ -83,6 +83,8 @@ Use the `dataset-builder` agent to create or import a validation dataset.
 
 Use the `prompt-drafter` agent to generate multiple prompt variants and screen them cheaply. The dataset must exist before this step.
 
+**This step is mandatory.** The eval-runner must not start iteration from the baseline prompt directly. Screening identifies the best prompting *strategy* (few-shot vs chain-of-thought vs constraint-first etc.) before iteration refines within that strategy. Skipping screening means iterating blind — small incremental tweaks to a fundamentally wrong strategy waste cycles.
+
 1. Dispatch the `prompt-drafter` agent with the understood requirements
 2. The agent generates **5+ variants** across diverse strategies:
    - Direct instruction, few-shot, chain-of-thought, structured output, role-based, decomposition, etc.
@@ -101,22 +103,20 @@ Use the `prompt-drafter` agent to generate multiple prompt variants and screen t
 
 Use the `eval-runner` agent to run the evaluation loop.
 
-1. Initialize the `.promptly/state.json` with run metadata
-2. Launch the live HTML dashboard: run `python3 ${CLAUDE_PLUGIN_ROOT}/scripts/serve_dashboard.py .promptly/` and open in browser
-3. **Hypothesis-driven iteration**: Each iteration formulates specific hypotheses about how to improve the prompt, then tests them:
-   a. Analyze failures from the previous iteration and formulate 2-3 **hypotheses** (e.g., "adding format examples will fix 40% of formatting errors")
-   b. Use **TaskCreate** to track each hypothesis being tested — include the hypothesis, the strategy, and expected impact
-   c. **Parallelize where possible**: Test independent hypotheses concurrently using parallel agent invocations. Each agent tests one hypothesis variant against the dataset.
-   d. **Early stopping**: Use `evaluate.py --early-stop-threshold <baseline_score>` to abort evaluation early if a version is clearly underperforming. This saves cost by not finishing runs that are already losing.
-   e. Compare results across hypotheses, pick the best, and merge winning changes
-   f. Save the improved prompt as `.promptly/prompts/v<N+1>.md`
-   g. Update tasks with results using **TaskUpdate**
-   h. Check convergence:
-      - Score >= target threshold? Stop.
-      - No improvement for `patience` iterations? Stop.
-      - Reached max iterations? Stop.
-   i. In check-in mode: pause and present results to user
-4. Update `.promptly/state.json` after each iteration
+1. Initialize `.promptly/state.json` with run metadata.
+2. Launch the live HTML dashboard: run `python3 ${CLAUDE_PLUGIN_ROOT}/scripts/serve_dashboard.py .promptly/` and open in browser.
+3. **Model sweep (first run only):** The eval-runner tests the baseline prompt on 2-3 candidate models. If a model upgrade gives >5% improvement, it switches models before iterating on prompt text.
+4. **Hypothesis-driven iteration:** Each iteration follows a strict procedure:
+   a. Analyze failures from the previous iteration — identify the lowest-scoring dimension and read the bottom-5 cases.
+   b. Formulate 2-3 hypotheses. The first hypothesis must target the dominant failure mode.
+   c. Check prompt budget — reject hypotheses that add >30% length for <5% expected improvement.
+   d. Test hypotheses in parallel. Use early stopping to abort evaluations that are clearly losing.
+   e. Compare results with per-dimension deltas, not just overall score.
+   f. **Regression check:** If the best hypothesis scores lower than current best, roll back and diagnose. Do not advance the version number.
+   g. Merge winning changes and run full validation.
+   h. Check convergence (target score, patience, max iterations).
+   i. In check-in mode: pause and present results with dimension-level comparison table.
+5. Update `.promptly/state.json` after each iteration with version history including per-dimension scores and prompt word count.
 
 ## Step 7: Final Report
 
