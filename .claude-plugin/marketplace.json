@@ -36,6 +36,14 @@
       "author": {
         "name": "droshima"
       }
+    },
+    {
+      "name": "chronos",
+      "description": "Schedule and manage cron jobs and one-off tasks using natural language.",
+      "source": "./chronos",
+      "author": {
+        "name": "droshima"
+      }
     }
   ]
 }

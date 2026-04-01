@@ -1,0 +1,8 @@
+{
+  "name": "chronos",
+  "version": "0.1.0",
+  "description": "Schedule and manage cron jobs and one-off tasks using natural language",
+  "author": {
+    "name": "droshima"
+  }
+}
